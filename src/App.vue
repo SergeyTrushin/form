@@ -1,28 +1,41 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+      <MainAttributes/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { required, minLength, between } from 'vuelidate/lib/validators'
+import MainAttributes from "./components/MainAttributes"
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    MainAttributes,
+  },
+  data(){
+    return{
+      name: '',
+      age: 0
+    }
+  },
+   validations: {
+    name: {
+      required,
+      minLength: minLength(4)
+    },
+  },
+  methods:{
+    submit(){
+      alert(1)
+    }
   }
 }
 </script>
 
-<style>
+<style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  font-size: 18px;
+  font-family: sans-serif;
 }
 </style>
