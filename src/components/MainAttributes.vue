@@ -4,10 +4,11 @@
         <h2>Новый клиент</h2>
 
         <div class="input">
-            <input id="secondName" type="text" 
+            <input id="secondName" 
+            	   type="text" 
                    v-model.trim="secondName"
                    required
-                   :class="{invalid: $v.secondName.$dirty}"
+                   :class="{invalid: ($v.secondName.$dirty && !$v.secondName.required)}"
             >
             <label for="secondName">Фамилия</label>
         </div>
@@ -15,12 +16,12 @@
         <div class="input">
             <input id="firstName" type="text" required 
                    v-model.trim="firstName"
-                   :class="{invalid: $v.firstName.$required}"
+                   
             >
             <label for="firstName">Имя</label>
         </div>
 
-        <div class="input">
+        <div class="input">	
             <input id="middleName" type="text" v-model.trim="middleName">
             <label for="middleName">Отчество</label>
         </div>
@@ -30,7 +31,7 @@
                    onfocus="this.type='date' " 
                    onblur= "this.type='text' "
                    v-model="date"
-                   :class="{invalid: $v.date.$dirty}"
+     
                    required
             />
             <label for="date">Дата рождения</label>
@@ -40,7 +41,7 @@
             <input id="phone" type="tel" required 
                    v-model.trim="phone"
                    required
-                   :class="{invalid: $v.phone.$invalid}"
+                   
             >
             <label for="phone">Телефон</label>
         </div>
@@ -75,14 +76,14 @@
         <input id="sms" type="checkbox" required v-model="sms">
         <label for="sms">Не отправлять СМС</label>
 
-        <button type="submit" @click="$emit('next')">
+        <button type="submit" @click="submit">
             Продолжить
         </button>
     </form>
 </template>
 
 <script>
-import {email, required, minLength} from "vuelidate/lib/validators"
+import {required, minLength} from "vuelidate/lib/validators"
 
 export default {
     data(){
@@ -120,6 +121,8 @@ export default {
             if (this.$v.invalid){
                 this.$v.$touch()
                 return
+            }else{
+
             }
         },
     }
@@ -175,6 +178,7 @@ form{
 
     .invalid{
         border-bottom: 2px solid #f7497d;
+        background: red;
     }
     label{
         position: absolute;
