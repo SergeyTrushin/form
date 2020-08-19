@@ -1,34 +1,31 @@
 <template>
   <div id="app">
-      <MainAttributes/>
+      <MainAttributes :class="{ hide : !showMain}" @next="showMain=false;showAdress=true"/>
+      <Adress :class="{ hide : !showAdress}" @next="showAdress=false;showPasport=true " @back="showAdress=false;showMain=true "/>
+      <Pasport :class="{ hide : !showPasport}" @back="showPasport=false;showAdress=true "/>
   </div>
 </template>
 
 <script>
-import { required, minLength, between } from 'vuelidate/lib/validators'
 import MainAttributes from "./components/MainAttributes"
+import Adress from "./components/Adress"
+import Pasport from "./components/Pasport"
 
 export default {
   name: 'App',
   components: {
     MainAttributes,
+    Adress,
+    Pasport
   },
   data(){
     return{
-      name: '',
-      age: 0
+      showMain: true,
+      showAdress: false,
+      showPasport: false,
     }
-  },
-   validations: {
-    name: {
-      required,
-      minLength: minLength(4)
-    },
   },
   methods:{
-    submit(){
-      alert(1)
-    }
   }
 }
 </script>
@@ -37,5 +34,9 @@ export default {
 #app {
   font-size: 18px;
   font-family: sans-serif;
+}
+
+.hide{
+  display: none;
 }
 </style>

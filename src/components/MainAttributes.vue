@@ -7,7 +7,7 @@
             <input id="secondName" type="text" 
                    v-model.trim="secondName"
                    required
-                   :class="{invalid: ($v.secondName.$dirty && $v.secondName.required)}"
+                   :class="{invalid: $v.secondName.$dirty}"
             >
             <label for="secondName">Фамилия</label>
         </div>
@@ -15,7 +15,7 @@
         <div class="input">
             <input id="firstName" type="text" required 
                    v-model.trim="firstName"
-                   :class="{invalid: $v.firstName.$dirty}"
+                   :class="{invalid: $v.firstName.$required}"
             >
             <label for="firstName">Имя</label>
         </div>
@@ -75,7 +75,7 @@
         <input id="sms" type="checkbox" required v-model="sms">
         <label for="sms">Не отправлять СМС</label>
 
-        <button type="submit">
+        <button type="submit" @click="$emit('next')">
             Продолжить
         </button>
     </form>
@@ -102,6 +102,7 @@ export default {
     validations: {
         secondName: {
             required,
+            minLength: minLength(4)
         },
         firstName: {
             required
