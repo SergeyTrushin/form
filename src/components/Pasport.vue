@@ -1,15 +1,24 @@
 <template>
-  <form @submit.prevent="">
+  <form @submit.prevent>
 
     <h2>Документ</h2>
 
   	<div class="input">
-            <select name="document" id="document">
+            <select  id="document"
+                     v-model="document"
+                     :class="{invalid: ($v.document.$dirty && !$v.document.required)}" 
+                     required>
                 <option value="pasport">Паспорт</option>
                 <option value="birth ">Свидетельство о рождении</option>
                 <option value="driveLicense">Вод. удостоверени</option>
             </select>
-            <label for="doc">Тип документа</label>
+            <label for="document">Тип документа</label>
+
+            <div v-if="$v.document.$dirty && !$v.document.required"
+              class="help-text" 
+            >
+              Пожайлуста, выберите тип документа!
+          </div>
     </div>
 
     <div class="input">
@@ -37,18 +46,61 @@
           <input type="text" id="date" name="date" 
                  onfocus="this.type='date' " 
                  onblur= "this.type='text' "
-                 required
+                 v-model="date"
+                 :class="{invalid: ($v.date.$dirty && !$v.date.required)}" 
+                 required 
           />
           <label for="date">Дата выдачи </label>
+           <div v-if="$v.date.$dirty && !$v.date.required"
+              class="help-text" 
+            >
+              Пожайлуста, введите дату выдачи документа!
+          </div>
     </div>
 
-    <button>Готово</button>
+    <button @click="submit">Готово</button>
     
     <button @click="$emit('back')">Назад</button>
   </form>
 </template>
 
+<script>
+import {required} from "vuelidate/lib/validators"
+
+export default{
+  data: ()=>({
+    document: "",
+    date: ""
+  }),
+  validations: {
+    document: {
+      required
+    },
+    date: {
+      required
+    }
+  },
+  methods:{
+        submit(){
+            if (this.$v.$invalid){
+                this.$v.$touch()
+                return
+            }
+            this.$emit("success")
+            
+        },
+    }
+
+}
+
+</script>
+
 <style lang="scss">
+
+.invalid{
+        border-bottom: 2px solid #f7497d;
+}
+
 form{
     position: absolute;
     top: 50%;

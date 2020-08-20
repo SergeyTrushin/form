@@ -7,18 +7,30 @@
             <input id="secondName" 
             	   type="text" 
                    v-model.trim="secondName"
-                   required
                    :class="{invalid: ($v.secondName.$dirty && !$v.secondName.required)}"
+                   required 
             >
-            <label for="secondName">Фамилия</label>
+            <label for="secondName">Фамилия*</label>
+
+            <div v-if="$v.secondName.$dirty && !$v.secondName.required"
+				   class="help-text" 
+            >
+            	Пожайлуста, введите вашу фамилию!
+            </div>
         </div>
 
         <div class="input">
             <input id="firstName" type="text" required 
                    v-model.trim="firstName"
-                   
+                   :class="{invalid: ($v.firstName.$dirty && !$v.firstName.required)}"
             >
-            <label for="firstName">Имя</label>
+            <label for="firstName">Имя*</label>
+
+            <div v-if="$v.secondName.$dirty && !$v.secondName.required"
+				   class="help-text" 
+            >
+            	Пожайлуста, введите ваше имя!
+            </div>
         </div>
 
         <div class="input">	
@@ -27,23 +39,42 @@
         </div>
 
         <div class="input">
-            <input type="text" id="date" name="date" 
+            <input type="text" id="date"
                    onfocus="this.type='date' " 
                    onblur= "this.type='text' "
                    v-model="date"
-     
+                   :class="{invalid: ($v.date.$dirty && !$v.date.required)}"
                    required
             />
-            <label for="date">Дата рождения</label>
+            <label for="date">Дата рождения*</label>
+
+            <div v-if="$v.date.$dirty && !$v.date.required"
+				   class="help-text" 
+            >
+            	Пожайлуста, введите дату вашего рождения!
+            </div>
         </div>
 
         <div class="input">
             <input id="phone" type="tel" required 
                    v-model.trim="phone"
+                   :class="{invalid: ($v.phone.$dirty && !$v.phone.required) || ($v.phone.$dirty && !$v.phone.minLength) }"
                    required
                    
             >
-            <label for="phone">Телефон</label>
+            <label for="phone">Телефон*</label>
+
+            <div v-if="$v.phone.$dirty && !$v.phone.required"
+				   class="help-text" 
+            >
+            	Пожайлуста, введите ваш номер телефона!
+            </div>
+
+            <div v-if="$v.phone.$dirty && !$v.phone.minLength"
+				   class="help-text" 
+            >
+            	Номер должен сожержать минимум 11 цифр и начинаться с +7
+            </div>
         </div>
 
         <div class="input">
@@ -55,13 +86,22 @@
         </div>
 
         <div class="input">
-            <select name="group" id="group" multiple v-model="group" required>
-                <option disabled class="selectHeader">Группа клиентов</option>
+            <select id="group"
+            	    multiple 
+            	    v-model="group" 
+					:class="{invalid: ($v.group.$dirty && !$v.group.required)}"
+            	    required>
+                <option disabled class="selectHeader">Группа клиентов*</option>
                 <option value="VIP">VIP</option>
                 <option value="PROBLEM">Проблемные</option>
                 <option value="OMS">ОМС</option>
             </select>
             
+            <div v-if="$v.group.$dirty && !$v.group.required"
+				   class="help-text" 
+            >
+            	Пожайлуста, выберите хотя бы одну группу клиетов!
+            </div>
         </div>
 
         <div class="input">
@@ -73,7 +113,7 @@
             <label for="doc">Лечащий врач</label>
         </div>
 
-        <input id="sms" type="checkbox" required v-model="sms">
+        <input id="sms" type="checkbox" v-model="sms">
         <label for="sms">Не отправлять СМС</label>
 
         <button type="submit" @click="submit">
@@ -86,24 +126,22 @@
 import {required, minLength} from "vuelidate/lib/validators"
 
 export default {
-    data(){
-        return{
-            secondName: "",
-            firstName: "",
-            middleName: "",
-            date: "",
-            phone: "+7",
-            gender: "",
-            group: [],
-            doc: "",
-            sms: true
-        }
-    },
+    data: ()=>({
+    	secondName: "",
+        firstName: "",
+        middleName: "",
+        date: "",
+        phone: "+7",
+        gender: "",
+        group: [],
+        doc: "",
+        sms: true
+    }),
 
     validations: {
         secondName: {
             required,
-            minLength: minLength(4)
+            minLength: minLength(2)
         },
         firstName: {
             required
@@ -114,16 +152,18 @@ export default {
         phone: {
             required,
             minLength: minLength(12)
+        },
+        group: {
+        	required
         }
     },
     methods:{
         submit(){
-            if (this.$v.invalid){
+            if (this.$v.$invalid){
                 this.$v.$touch()
                 return
-            }else{
-
             }
+            this.$emit('next')
         },
     }
 
@@ -141,7 +181,7 @@ form{
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 1rem;
-     button{
+    button{
         border: none;
         outline: none;
         padding: 10px 0;
@@ -176,9 +216,13 @@ form{
         }
     }
 
+    .help-text{
+    	color: red;
+    	margin-bottom: 1rem;
+    }
+
     .invalid{
         border-bottom: 2px solid #f7497d;
-        background: red;
     }
     label{
         position: absolute;
