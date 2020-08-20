@@ -48,6 +48,11 @@ export default {
 #app {
   font-size: 18px;
   font-family: sans-serif;
+  @media(max-width: 768px){
+      &{
+        padding: 50px;
+      }
+  }
 }
 .hide{
   display: none;
@@ -78,7 +83,8 @@ form{
       &{
         width: 100%;
         font-size: 13px;
-        padding: 10px;
+        margin: 10px;
+        border: 0;
         h2{
           font-size: 15px;
         }
@@ -126,6 +132,7 @@ form{
         top: 10px;
         color: #999;
         transition: .5s;
+        margin-top: 10px;
     }
 
 }
