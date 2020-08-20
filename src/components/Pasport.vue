@@ -94,32 +94,3 @@ export default{
 }
 
 </script>
-
-<style lang="scss">
-
-.invalid{
-        border-bottom: 2px solid #f7497d;
-}
-
-form{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 500px;
-    transform: translate(-50%,-50%);
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 1rem;
-     button{
-        border: none;
-        outline: none;
-        padding: 10px 0;
-        cursor: pointer;
-        background: #f7497d;
-        color: #fff;
-        text-transform: uppercase;
-        width: 100%;
-        margin-top: 15px;
-    }
-}
-</style>
